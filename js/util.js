@@ -11,16 +11,16 @@ const checkMaxStringLength = (string, maxLength) => string.length <= maxLength;
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const getUniqueRandomNumbers = (min, max, usedNumbers) => {
+const getUniqueRandomNumbers = (min, max, previousValues) => {
   let randomNumber = getRandomInteger(min, max);
-  if (usedNumbers.length !== 0) {
-    for(let i = 0; i < usedNumbers.length; i++) {
-      if (usedNumbers.includes(randomNumber)) {
+  if (previousValues.length !== 0) {
+    for(let i = 0; i < previousValues.length; i++) {
+      if (previousValues.includes(randomNumber)) {
         randomNumber = getRandomInteger(min, max);
       }
     }
   }
-  usedNumbers.push(randomNumber);
+  previousValues.push(randomNumber);
   return randomNumber;
 };
 

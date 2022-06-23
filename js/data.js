@@ -1,7 +1,19 @@
 import { getRandomInteger, getRandomArrayElement, getUniqueRandomNumbers } from './util.js';
 
-const PHOTO_DESCRIPTIONS_COUNT = 25;
+const MIN_PHOTO_INDEX = 1;
+const PHOTOS_COUNT = 25;
+const MIN_COMMENTS_NUMBER = 1;
+const MAX_COMMENTS_NUMBER = 5;
+const MIN_COMMENT_ID = 1;
+const MAX_COMMENT_ID = 200;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_AVATAR_INDEX = 1;
+const MAX_AVATAR_INDEX = 6;
+
 const USED_PHOTOS_ID = [];
+const USED_PHOTOS_URL = [];
+const USED_COMMENTS_ID = [];
 
 const DESCRIPTIONS = [
   'No filters',
@@ -35,26 +47,26 @@ const NAMES = [
 ];
 
 const createComment = () => ({
-  id: getUniqueRandomNumbers(1, 200, USED_PHOTOS_ID),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  id: getUniqueRandomNumbers(MIN_COMMENT_ID, MAX_COMMENT_ID, USED_COMMENTS_ID),
+  avatar: `img/avatar-${getRandomInteger(MIN_AVATAR_INDEX, MAX_AVATAR_INDEX)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
 });
 
-const createCommentList = () => {
-  const COMMENT_COUNT = getRandomInteger(0, 5);
-  const COMMENT_PHOTO = Array.from({length: COMMENT_COUNT}, createComment);
-  return COMMENT_PHOTO;
+const createCommentsList = () => {
+  const commentsCount = getRandomInteger(MIN_COMMENTS_NUMBER, MAX_COMMENTS_NUMBER);
+  const commentsList = Array.from({length: commentsCount}, createComment);
+  return commentsList;
 };
 
 const createPhoto = () => ({
-  id: getUniqueRandomNumbers(1, 25, USED_PHOTOS_ID),
-  url: `photos/${getUniqueRandomNumbers(1, 25, USED_PHOTOS_ID)}`,
+  id: getUniqueRandomNumbers(MIN_PHOTO_INDEX, PHOTOS_COUNT, USED_PHOTOS_ID),
+  url: `photos/${getUniqueRandomNumbers(MIN_PHOTO_INDEX, PHOTOS_COUNT, USED_PHOTOS_URL)}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(15, 200),
-  comments: createCommentList()
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comments: createCommentsList()
 });
 
-const createPhotoList = () => Array.from({length: PHOTO_DESCRIPTIONS_COUNT}, createPhoto);
+const createPhotoList = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
 
 export {createPhotoList};
