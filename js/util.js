@@ -24,4 +24,10 @@ const getUniqueRandomNumbers = (min, max, previousValues) => {
   return randomNumber;
 };
 
-export {getRandomInteger, checkMaxStringLength, getRandomArrayElement, getUniqueRandomNumbers};
+const createElement = (tagName, className) => {
+  const element = document.createElement(tagName);
+  element.classList.add(className);
+  return element;
+};
+
+export {getRandomInteger, checkMaxStringLength, getRandomArrayElement, getUniqueRandomNumbers, createElement};

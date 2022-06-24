@@ -2,8 +2,8 @@ import { getRandomInteger, getRandomArrayElement, getUniqueRandomNumbers } from 
 
 const MIN_PHOTO_INDEX = 1;
 const PHOTOS_COUNT = 25;
-const MIN_COMMENTS_NUMBER = 1;
-const MAX_COMMENTS_NUMBER = 5;
+const MIN_COMMENTS_NUMBER = 0;
+const MAX_COMMENTS_NUMBER = 15;
 const MIN_COMMENT_ID = 1;
 const MAX_COMMENT_ID = 200;
 const MIN_LIKES = 15;
@@ -21,7 +21,9 @@ const DESCRIPTIONS = [
   'Лень было придумывать описание',
   'Самый счастливый день в моей жизни',
   'А как бы вы назвали это фото?',
-  'Открываю для себя новое'
+  'Открываю для себя новое',
+  'Это просто чудо!',
+  'Enjoy the moment'
 ];
 
 const MESSAGES = [
@@ -69,4 +71,4 @@ const createPhoto = () => ({
 
 const createPhotoList = () => Array.from({length: PHOTOS_COUNT}, createPhoto);
 
-export {createPhotoList};
+export { createPhoto, createPhotoList };
