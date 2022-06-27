@@ -1,5 +1,7 @@
 import { createPhotoList } from './data.js';
-import { renderPicture } from './render-pictures.js';
+import { renderMiniatures } from './render-miniatures.js';
 
 const similarPictures = createPhotoList();
-renderPicture (similarPictures);
+
+renderMiniatures (similarPictures);
+
