@@ -1,16 +1,16 @@
-import { createComments, renderBigPicture } from './render-big-picture.js';
+import { renderComments, renderBigPicture } from './render-big-picture.js';
 
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerElement = document.querySelector('.pictures');
 
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const renderMiniatures = (miniatures) => {
+const renderPictures = (pictures) => {
   const similarPicturesFragment = document.createDocumentFragment();
 
-  miniatures.forEach((miniature) => {
-    const {url, likes, comments} = miniature;
+  pictures.forEach((picture) => {
+    const {url, likes, comments} = picture;
 
     const pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('.picture__img').src = url;
@@ -19,15 +19,15 @@ const renderMiniatures = (miniatures) => {
 
     pictureElement.addEventListener('click', (evt) => {
       evt.preventDefault();
-      renderBigPicture(miniature);
+      renderBigPicture(picture);
       document.querySelector('.social__comments').replaceChildren();
-      createComments(comments);
+      renderComments(comments);
     });
 
     similarPicturesFragment.append(pictureElement);
   });
 
-  picturesContainer.append(similarPicturesFragment);
+  picturesContainerElement.append(similarPicturesFragment);
 };
 
-export { renderMiniatures };
+export { renderPictures };

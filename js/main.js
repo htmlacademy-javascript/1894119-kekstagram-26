@@ -1,7 +1,8 @@
 import { createPhotoList } from './data.js';
-import { renderMiniatures } from './render-miniatures.js';
+import { renderPictures } from './render-miniatures.js';
+import './form-validation.js';
 
-const similarPictures = createPhotoList();
+const photos = createPhotoList();
 
-renderMiniatures (similarPictures);
+renderPictures(photos);
 
