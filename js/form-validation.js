@@ -2,6 +2,7 @@ import { isEscapeKey, checkMaxStringLength } from './util.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS_COUNT = 5;
+const MAX_HASHTAG_LENGTH = 20;
 
 const RE_HASHTAG = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
 
@@ -11,81 +12,112 @@ const imgUploadOverlayElement = formElement.querySelector('.img-upload__overlay'
 const uploadCancelElement = formElement.querySelector('.img-upload__cancel');
 const textHashtagsElement = formElement.querySelector('.text__hashtags');
 const textDescriptionElement = formElement.querySelector('.text__description');
+const imgUploadSubmitElement = formElement.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(formElement, {
-  classTo: 'form__item',
-  errorClass: 'form__item--invalid',
-  successClass: 'form__item--valid',
-  errorTextParent: 'form__item',
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--invalid',
+  successClass: 'img-upload__field-wrapper--valid',
+  errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'span',
-  errorTextClass: 'form__error'
+  errorTextClass: 'img-upload__error'
 });
+
+const closeModal = () => {
+  imgUploadOverlayElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  uploadFileElement.value = '';
+};
 
 const onEscKeydown = (evt) => {
   if( isEscapeKey(evt) ) {
     evt.preventDefault();
-    imgUploadOverlayElement.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    if (textHashtagsElement !== document.activeElement && textDescriptionElement !== document.activeElement) {
+      closeModal();
+    }
   }
 };
 
-const onUploadCancelElementClick = () => {
-  imgUploadOverlayElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-};
-
-const onUploadFileElementClick = () => {
+const openModal = () => {
   imgUploadOverlayElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onEscKeydown);
-  uploadCancelElement.addEventListener('click', onUploadCancelElementClick);
+  uploadCancelElement.addEventListener('click', closeModal);
 };
 
-const checksUniqueHashtags = (hashtags) => !(hashtags.some((hashtag) => hashtags.indexOf(hashtag) !== hashtags.lastIndexOf(hashtag)));
+let validationHashtagsErrorMessage;
 
-const validateHashtag = (hashtag) => RE_HASHTAG.test(hashtag);
+const getErrorMessage = () => validationHashtagsErrorMessage;
 
 const validateHashtags = () => {
-  const hashtags = textHashtagsElement.value.toLowerCase().trim().split(' ');
+  const hashtags = textHashtagsElement.value.split(' ');
 
-  if (textHashtagsElement.value.length === 0) {
+  if (textHashtagsElement.value === '') {
     return true;
   }
-  return hashtags.every(validateHashtag)
-    && hashtags.length <= MAX_HASHTAGS_COUNT
-    && checksUniqueHashtags(hashtags);
+
+  if (textHashtagsElement.value.endsWith(' ')) {
+    validationHashtagsErrorMessage = 'Хэштег не должен заканчиваться пробелом';
+    return false;
+  }
+
+  if (!hashtags.every((hashtag) => hashtag.startsWith('#'))) {
+    validationHashtagsErrorMessage = 'Хэштег должен начинаться с #';
+    return false;
+  }
+
+  if (hashtags.some((hashtag) => hashtag === '#')) {
+    validationHashtagsErrorMessage = 'Хэштег не может состоять только из #';
+    return false;
+  }
+
+  if (hashtags.includes('')) {
+    validationHashtagsErrorMessage = 'Только один пробел между хэштегами';
+    return false;
+  }
+
+  if (hashtags.some((hashtag) => hashtag.length > MAX_HASHTAG_LENGTH)) {
+    validationHashtagsErrorMessage = `Максимальная длина хэштега - ${MAX_HASHTAG_LENGTH} символов`;
+    return false;
+  }
+
+  if (hashtags.length > MAX_HASHTAGS_COUNT) {
+    validationHashtagsErrorMessage = `Максимальное количество хэштегов - ${MAX_HASHTAGS_COUNT}`;
+    return false;
+  }
+
+  return hashtags.every((hashtag, i) => {
+    if (!RE_HASHTAG.test(hashtag)) {
+      validationHashtagsErrorMessage = 'Хэштег содержит запрещенные символы';
+      return false;
+    }
+
+    for (++i; i < hashtags.length; i++) {
+      if (hashtag.toLowerCase() === hashtags[i].toLowerCase()) {
+        validationHashtagsErrorMessage = 'Хэштеги не должны повторяться';
+        return false;
+      }
+    }
+    return true;
+  });
 };
 
 const comment = textDescriptionElement.value;
 
 const validateComments = () => checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
 
-pristine.addValidator(textHashtagsElement, validateHashtags, 'Хэш-тэг не валидный');
+pristine.addValidator(textHashtagsElement, validateHashtags, getErrorMessage);
 
-pristine.addValidator(textDescriptionElement, validateComments, 'Не более 140 символов');
+pristine.addValidator(textDescriptionElement, validateComments, `Не более ${MAX_COMMENT_LENGTH} символов`);
 
-textHashtagsElement.addEventListener('focusin', () => {
-  document.removeEventListener('keydown', onEscKeydown);
-});
-
-textDescriptionElement.addEventListener('focusin', () => {
-  document.removeEventListener('keydown', onEscKeydown);
-});
-
-textHashtagsElement.addEventListener('focusout', () => {
-  document.addEventListener('keydown', onEscKeydown);
-});
-
-textDescriptionElement.addEventListener('focusout', () => {
-  document.addEventListener('keydown', onEscKeydown);
-});
-
-uploadFileElement.addEventListener('change', onUploadFileElementClick);
+uploadFileElement.addEventListener('change', openModal);
 
 formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (!isValid) {
     evt.preventDefault();
+    imgUploadSubmitElement.disabled = true;
   }
+  imgUploadSubmitElement.disabled = false;
 });
