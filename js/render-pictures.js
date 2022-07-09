@@ -1,4 +1,4 @@
-import { renderComments, renderBigPicture } from './render-big-picture.js';
+import { renderBigPicture } from './render-big-picture.js';
 
 const picturesContainerElement = document.querySelector('.pictures');
 
@@ -20,8 +20,6 @@ const renderPictures = (pictures) => {
     pictureElement.addEventListener('click', (evt) => {
       evt.preventDefault();
       renderBigPicture(picture);
-      document.querySelector('.social__comments').replaceChildren();
-      renderComments(comments);
     });
 
     similarPicturesFragment.append(pictureElement);
