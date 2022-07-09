@@ -30,4 +30,6 @@ const createElement = (tagName, className) => {
   return element;
 };
 
-export {getRandomInteger, checkMaxStringLength, getRandomArrayElement, getUniqueRandomNumbers, createElement};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomInteger, checkMaxStringLength, getRandomArrayElement, getUniqueRandomNumbers, createElement, isEscapeKey };
