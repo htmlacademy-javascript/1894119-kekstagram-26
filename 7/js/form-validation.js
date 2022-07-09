@@ -27,6 +27,7 @@ const closeModal = () => {
   imgUploadOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadFileElement.value = '';
+  uploadCancelElement.removeEventListener('click', closeModal);
 };
 
 const onEscKeydown = (evt) => {
@@ -103,9 +104,13 @@ const validateHashtags = () => {
   });
 };
 
-const comment = textDescriptionElement.value;
-
-const validateComments = () => checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
+const validateComments = () => {
+  const comment = textDescriptionElement.value;
+  if (comment.length === 0) {
+    return true;
+  }
+  return checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
+};
 
 pristine.addValidator(textHashtagsElement, validateHashtags, getErrorMessage);
 
@@ -115,9 +120,12 @@ uploadFileElement.addEventListener('change', openModal);
 
 formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
+  evt.preventDefault();
   if (!isValid) {
-    evt.preventDefault();
     imgUploadSubmitElement.disabled = true;
   }
-  imgUploadSubmitElement.disabled = false;
+  if (isValid) {
+    imgUploadSubmitElement.disabled = false;
+    closeModal();
+  }
 });
