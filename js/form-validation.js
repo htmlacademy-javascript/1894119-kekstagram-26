@@ -121,11 +121,10 @@ uploadFileElement.addEventListener('change', openModal);
 formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
-  if (!isValid) {
-    imgUploadSubmitElement.disabled = true;
-  }
   if (isValid) {
-    imgUploadSubmitElement.disabled = false;
+    imgUploadSubmitElement.removeAttribute('disabled', 'disabled');
     closeModal();
+  } else {
+    imgUploadSubmitElement.setAttribute('disabled', 'disabled');
   }
 });
