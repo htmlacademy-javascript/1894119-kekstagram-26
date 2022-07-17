@@ -94,9 +94,9 @@ formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
   if (isValid) {
-    imgUploadSubmitElement.removeAttribute('disabled', 'disabled');
+    imgUploadSubmitElement.removeAttribute('disabled');
     closeModal();
   } else {
-    imgUploadSubmitElement.setAttribute('disabled', 'disabled');
+    imgUploadSubmitElement.setAttribute('disabled');
   }
 });

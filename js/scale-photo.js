@@ -33,5 +33,14 @@ const zoomIn = () => {
   scale();
 };
 
-scaleControlSmallerElement.addEventListener('click', zoomOut);
-scaleControlBiggerElement.addEventListener('click', zoomIn);
+const addScalingEventListeners = () => {
+  scaleControlSmallerElement.addEventListener('click', zoomOut);
+  scaleControlBiggerElement.addEventListener('click', zoomIn);
+};
+
+const removeScalingEventListeners = () => {
+  scaleControlSmallerElement.removeEventListener('click', zoomOut);
+  scaleControlBiggerElement.removeEventListener('click', zoomIn);
+};
+
+export { addScalingEventListeners, removeScalingEventListeners };
