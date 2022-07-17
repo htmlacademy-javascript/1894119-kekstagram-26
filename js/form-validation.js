@@ -1,4 +1,5 @@
-import { isEscapeKey, checkMaxStringLength } from './util.js';
+import { checkMaxStringLength } from './util.js';
+import { closeModal } from './open-close-modal.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS_COUNT = 5;
@@ -7,9 +8,6 @@ const MAX_HASHTAG_LENGTH = 20;
 const RE_HASHTAG = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
 
 const formElement = document.querySelector('.img-upload__form');
-const uploadFileElement = formElement.querySelector('#upload-file');
-const imgUploadOverlayElement = formElement.querySelector('.img-upload__overlay');
-const uploadCancelElement = formElement.querySelector('.img-upload__cancel');
 const textHashtagsElement = formElement.querySelector('.text__hashtags');
 const textDescriptionElement = formElement.querySelector('.text__description');
 const imgUploadSubmitElement = formElement.querySelector('.img-upload__submit');
@@ -22,30 +20,6 @@ const pristine = new Pristine(formElement, {
   errorTextTag: 'span',
   errorTextClass: 'img-upload__error'
 });
-
-const closeModal = () => {
-  imgUploadOverlayElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  uploadFileElement.value = '';
-  uploadCancelElement.removeEventListener('click', closeModal);
-};
-
-const onEscKeydown = (evt) => {
-  if( isEscapeKey(evt) ) {
-    evt.preventDefault();
-    if (textHashtagsElement !== document.activeElement && textDescriptionElement !== document.activeElement) {
-      closeModal();
-    }
-  }
-};
-
-const openModal = () => {
-  imgUploadOverlayElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onEscKeydown);
-  uploadCancelElement.addEventListener('click', closeModal);
-};
 
 let validationHashtagsErrorMessage;
 
@@ -116,16 +90,13 @@ pristine.addValidator(textHashtagsElement, validateHashtags, getErrorMessage);
 
 pristine.addValidator(textDescriptionElement, validateComments, `Не более ${MAX_COMMENT_LENGTH} символов`);
 
-uploadFileElement.addEventListener('change', openModal);
-
 formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
-  if (!isValid) {
-    imgUploadSubmitElement.disabled = true;
-  }
   if (isValid) {
-    imgUploadSubmitElement.disabled = false;
+    imgUploadSubmitElement.removeAttribute('disabled');
     closeModal();
+  } else {
+    imgUploadSubmitElement.setAttribute('disabled');
   }
 });

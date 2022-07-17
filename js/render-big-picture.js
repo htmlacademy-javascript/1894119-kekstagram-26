@@ -15,6 +15,8 @@ const commentCountElement = bigPictureElement.querySelector('.social__comment-co
 const onCloseButtonClick = () => {
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
+  closeButtonElement.removeEventListener('click', onCloseButtonClick);
 };
 
 const onEscKeydown = (evt) => {
@@ -23,6 +25,8 @@ const onEscKeydown = (evt) => {
     bigPictureElement.classList.add('hidden');
     document.body.classList.remove('modal-open');
   }
+
+  document.removeEventListener('keydown', onEscKeydown);
 };
 
 const renderComment = (comment) => {
