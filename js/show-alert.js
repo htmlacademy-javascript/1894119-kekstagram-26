@@ -1,4 +1,18 @@
+import { isEscapeKey } from './util.js';
+
 const ERROR_SHOW_TIME = 5000;
+
+const errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+const successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const errorElement = errorTemplate.cloneNode(true);
+
+const successElement = successTemplate.cloneNode(true);
 
 const showErrorGetData = (message) => {
   const errorContainer = document.createElement('div');
@@ -21,28 +35,15 @@ const showErrorGetData = (message) => {
   }, ERROR_SHOW_TIME);
 };
 
-const errorTemplate = document.querySelector('#error')
-  .content
-  .querySelector('.error');
-
-const successTemplate = document.querySelector('#success')
-  .content
-  .querySelector('.success');
-
-const errorElement = errorTemplate.cloneNode(true);
-
-const successElement = successTemplate.cloneNode(true);
-
-
 const onErrorEscapeKeydown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey) {
     evt.preventDefault();
     closeErrorPopup();
   }
 };
 
 const onSuccessEscapeKeydown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey) {
     evt.preventDefault();
     closeSuccessPopup();
   }
