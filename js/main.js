@@ -1,8 +1,13 @@
-import { createPhotoList } from './data.js';
 import { renderPictures } from './render-pictures.js';
-import './form-validation.js';
+import { setUserFormSubmit } from './form-validation.js';
+import { getData } from './api.js';
+import { showErrorGetData } from './show-alert.js';
+import { clearForm } from './open-close-modal.js';
 
-const photos = createPhotoList();
+const PHOTOS_COUNT = 25;
 
-renderPictures(photos);
+getData((photos) => {
+  renderPictures(photos.slice(0, PHOTOS_COUNT));
+}, showErrorGetData);
 
+setUserFormSubmit(clearForm);

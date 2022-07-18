@@ -1,5 +1,6 @@
 import { checkMaxStringLength } from './util.js';
-import { closeModal } from './open-close-modal.js';
+import { sendData } from './api.js';
+import { showErrorSubmit, showSuccessSubmit } from './show-alert.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAGS_COUNT = 5;
@@ -86,17 +87,41 @@ const validateComments = () => {
   return checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
 };
 
+const blockSubmitButton = () => {
+  imgUploadSubmitElement.disabled = true;
+  imgUploadSubmitElement.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  imgUploadSubmitElement.disabled = false;
+  imgUploadSubmitElement.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  formElement.addEventListener('submit', (evt) => {
+    const isValid = pristine.validate();
+    evt.preventDefault();
+
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          showSuccessSubmit();
+          unblockSubmitButton();
+        },
+        () => {
+          showErrorSubmit();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
 pristine.addValidator(textHashtagsElement, validateHashtags, getErrorMessage);
 
 pristine.addValidator(textDescriptionElement, validateComments, `Не более ${MAX_COMMENT_LENGTH} символов`);
 
-formElement.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  evt.preventDefault();
-  if (isValid) {
-    imgUploadSubmitElement.removeAttribute('disabled');
-    closeModal();
-  } else {
-    imgUploadSubmitElement.setAttribute('disabled');
-  }
-});
+export { setUserFormSubmit, pristine };

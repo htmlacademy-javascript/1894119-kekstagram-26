@@ -151,6 +151,6 @@ const removeChangingEffectEventListener = () => {
   heatEffectElement.removeEventListener('click', addHeatEffect);
 };
 
-export { addChangingEffectEventListeners, removeChangingEffectEventListener };
+export { removeEffects, addChangingEffectEventListeners, removeChangingEffectEventListener };
 
 
