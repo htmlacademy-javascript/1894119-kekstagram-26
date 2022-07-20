@@ -2,6 +2,7 @@ import { isEscapeKey } from './util.js';
 import { removeEffects, addChangingEffectEventListeners, removeChangingEffectEventListener } from './slider.js';
 import { addScalingEventListeners, removeScalingEventListeners } from './scale-photo.js';
 import { pristine } from './form-validation.js';
+import { uploadPhoto } from './upload-photo.js';
 
 const formElement = document.querySelector('.img-upload__form');
 const imgUploadOverlayElement = formElement.querySelector('.img-upload__overlay');
@@ -54,6 +55,7 @@ const openModal = () => {
 
   addChangingEffectEventListeners();
   addScalingEventListeners();
+  uploadPhoto();
 };
 
 uploadFileElement.addEventListener('change', openModal);

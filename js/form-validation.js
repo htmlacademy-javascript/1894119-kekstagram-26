@@ -88,7 +88,7 @@ const validateComments = () => {
 };
 
 const blockSubmitButton = () => {
-  imgUploadSubmitElement.setAttribute('disabled');
+  imgUploadSubmitElement.setAttribute('disabled', 'disabled');
   imgUploadSubmitElement.textContent = 'Публикую...';
 };
 
