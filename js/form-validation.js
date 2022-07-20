@@ -88,12 +88,12 @@ const validateComments = () => {
 };
 
 const blockSubmitButton = () => {
-  imgUploadSubmitElement.disabled = true;
+  imgUploadSubmitElement.setAttribute('disabled');
   imgUploadSubmitElement.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  imgUploadSubmitElement.disabled = false;
+  imgUploadSubmitElement.removeAttribute('disabled');
   imgUploadSubmitElement.textContent = 'Опубликовать';
 };
 

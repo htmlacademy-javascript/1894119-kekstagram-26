@@ -16,15 +16,7 @@ const successElement = successTemplate.cloneNode(true);
 
 const showErrorGetData = (message) => {
   const errorContainer = document.createElement('div');
-  errorContainer.style.zIndex = '100';
-  errorContainer.style.position = 'absolute';
-  errorContainer.style.left = '0';
-  errorContainer.style.top = '0';
-  errorContainer.style.right = '0';
-  errorContainer.style.padding = '20px 5px';
-  errorContainer.style.fontSize = '30px';
-  errorContainer.style.textAlign = 'center';
-  errorContainer.style.backgroundColor = 'red';
+  errorContainer.classList.add('error-container');
 
   errorContainer.textContent = message;
 
