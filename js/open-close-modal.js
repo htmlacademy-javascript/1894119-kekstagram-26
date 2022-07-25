@@ -7,7 +7,7 @@ import { uploadPhoto } from './upload-photo.js';
 const formElement = document.querySelector('.img-upload__form');
 const imgUploadOverlayElement = formElement.querySelector('.img-upload__overlay');
 const uploadFileElement = formElement.querySelector('#upload-file');
-const uploadCancelElement = formElement.querySelector('.img-upload__cancel');
+const imgUploadCancelElement = formElement.querySelector('.img-upload__cancel');
 const textHashtagsElement = formElement.querySelector('.text__hashtags');
 const textDescriptionElement = formElement.querySelector('.text__description');
 const imgUploadPreviewElement = formElement.querySelector('.img-upload__preview img');
@@ -18,8 +18,8 @@ const closeModal = () => {
   uploadFileElement.value = '';
 
   document.removeEventListener('keydown', onEscKeydown);
-  uploadCancelElement.removeEventListener('click', clearForm);
-  uploadCancelElement.removeEventListener('click', closeModal);
+  imgUploadCancelElement.removeEventListener('click', clearForm);
+  imgUploadCancelElement.removeEventListener('click', closeModal);
 
   removeChangingEffectEventListener();
   removeScalingEventListeners();
@@ -37,7 +37,7 @@ function clearForm () {
 }
 
 function onEscKeydown (evt) {
-  if( isEscapeKey(evt) ) {
+  if(isEscapeKey(evt)) {
     evt.preventDefault();
     if (textHashtagsElement !== document.activeElement && textDescriptionElement !== document.activeElement) {
       closeModal();
@@ -50,8 +50,8 @@ const openModal = () => {
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onEscKeydown);
-  uploadCancelElement.addEventListener('click', clearForm);
-  uploadCancelElement.addEventListener('click', closeModal);
+  imgUploadCancelElement.addEventListener('click', clearForm);
+  imgUploadCancelElement.addEventListener('click', closeModal);
 
   addChangingEffectEventListeners();
   addScalingEventListeners();

@@ -34,7 +34,7 @@ const validateHashtags = () => {
   }
 
   if (textHashtagsElement.value.endsWith(' ')) {
-    validationHashtagsErrorMessage = 'Хэштег не должен заканчиваться пробелом';
+    validationHashtagsErrorMessage = 'Хэштег не может содержать пробел';
     return false;
   }
 
@@ -81,10 +81,7 @@ const validateHashtags = () => {
 
 const validateComments = () => {
   const comment = textDescriptionElement.value;
-  if (comment.length === 0) {
-    return true;
-  }
-  return checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
+  return comment.length === 0 ? true : checkMaxStringLength(comment, MAX_COMMENT_LENGTH);
 };
 
 const blockSubmitButton = () => {

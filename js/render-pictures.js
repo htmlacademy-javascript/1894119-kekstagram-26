@@ -2,7 +2,7 @@ import { renderBigPicture } from './render-big-picture.js';
 
 const picturesContainerElement = document.querySelector('.pictures');
 
-const pictureTemplate = document.querySelector('#picture')
+const pictureTemplateElement = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
@@ -12,7 +12,7 @@ const renderPictures = (pictures) => {
   pictures.forEach((picture) => {
     const {url, likes, comments} = picture;
 
-    const pictureElement = pictureTemplate.cloneNode(true);
+    const pictureElement = pictureTemplateElement.cloneNode(true);
     pictureElement.querySelector('.picture__img').src = url;
     pictureElement.querySelector('.picture__comments').textContent = comments.length;
     pictureElement.querySelector('.picture__likes').textContent = likes;

@@ -2,17 +2,21 @@ import { isEscapeKey } from './util.js';
 
 const ERROR_SHOW_TIME = 5000;
 
-const errorTemplate = document.querySelector('#error')
+const errorTemplateElement = document.querySelector('#error')
   .content
   .querySelector('.error');
 
-const successTemplate = document.querySelector('#success')
+const errorElement = errorTemplateElement.cloneNode(true);
+
+const errorButtonElement = errorElement.querySelector('.error__button');
+
+const successTemplateElement = document.querySelector('#success')
   .content
   .querySelector('.success');
 
-const errorElement = errorTemplate.cloneNode(true);
+const successElement = successTemplateElement.cloneNode(true);
 
-const successElement = successTemplate.cloneNode(true);
+const successButtonElement = successElement.querySelector('.success__button');
 
 const showErrorGetData = (message) => {
   const errorContainer = document.createElement('div');
@@ -43,14 +47,14 @@ const onSuccessEscapeKeydown = (evt) => {
 
 function closeErrorPopup () {
   document.removeEventListener('keydown', onErrorEscapeKeydown);
-  document.body.removeChild(errorElement);
   document.removeEventListener('click', closeErrorPopup);
+  document.body.removeChild(errorElement);
 }
 
 function closeSuccessPopup () {
   document.removeEventListener('keydown', onSuccessEscapeKeydown);
-  document.body.removeChild(successElement);
   document.removeEventListener('click', closeSuccessPopup);
+  document.body.removeChild(successElement);
 }
 
 const onErrorPopupClick = (evt) => {
@@ -69,26 +73,18 @@ const showErrorSubmit = () => {
   errorElement.style.zIndex = '100';
   document.body.appendChild(errorElement);
 
-  const errorButtonElement = errorElement.querySelector('.error__button');
-
   document.addEventListener('keydown', onErrorEscapeKeydown);
-
-  errorButtonElement.addEventListener('click', closeErrorPopup);
-
   document.addEventListener('click', onErrorPopupClick);
+  errorButtonElement.addEventListener('click', closeErrorPopup);
 };
 
 const showSuccessSubmit = () => {
   successElement.style.zIndex = '100';
   document.body.appendChild(successElement);
 
-  const successButtonElement = successElement.querySelector('.success__button');
-
   document.addEventListener('keydown', onSuccessEscapeKeydown);
-
-  successButtonElement.addEventListener('click', closeSuccessPopup);
-
   document.addEventListener('click', onSuccessPopupClick);
+  successButtonElement.addEventListener('click', closeSuccessPopup);
 };
 
 export { showErrorGetData, showErrorSubmit, showSuccessSubmit };

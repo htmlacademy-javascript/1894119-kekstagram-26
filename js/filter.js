@@ -5,15 +5,13 @@ const RERENDER_DELAY = 500;
 const RANDOM_PHOTOS_COUNT = 10;
 
 const imgFiltersElement = document.querySelector('.img-filters');
-const imgFiltersButtons = imgFiltersElement.querySelectorAll('.img-filters__button');
-const filterDefaultButton = imgFiltersElement.querySelector('#filter-default');
-const filterRandomButton = imgFiltersElement.querySelector('#filter-random');
-const filterDiscussedButton = imgFiltersElement.querySelector('#filter-discussed');
+const imgFiltersButtonElements = imgFiltersElement.querySelectorAll('.img-filters__button');
+const filterDefaultElement = imgFiltersElement.querySelector('#filter-default');
+const filterRandomElement = imgFiltersElement.querySelector('#filter-random');
+const filterDiscussedElement = imgFiltersElement.querySelector('#filter-discussed');
 
 const toggleActiveFilter = (evt) => {
-  const filterButtonElements = imgFiltersElement.querySelectorAll('.img-filters__button');
-
-  filterButtonElements.forEach((button) => {
+  imgFiltersButtonElements.forEach((button) => {
     button.classList.remove('img-filters__button--active');
   });
 
@@ -21,8 +19,9 @@ const toggleActiveFilter = (evt) => {
 };
 
 const clearPhotos = () => {
-  const photoList = document.querySelectorAll('.picture');
-  photoList.forEach((picture) => {
+  const pictureElements = document.querySelectorAll('.picture');
+
+  pictureElements.forEach((picture) => {
     picture.remove();
   });
 };
@@ -52,19 +51,19 @@ const debouncePhotos = debounce(updatePhotos, RERENDER_DELAY);
 const initializeFilters = (photos) => {
   imgFiltersElement.classList.remove('img-filters--inactive');
 
-  imgFiltersButtons.forEach((button) => {
+  imgFiltersButtonElements.forEach((button) => {
     button.addEventListener('click', toggleActiveFilter);
   });
 
-  filterDefaultButton.addEventListener('click', () => {
+  filterDefaultElement.addEventListener('click', () => {
     debouncePhotos(onFilterDefaultButtonClick(photos));
   });
 
-  filterRandomButton.addEventListener('click', () => {
+  filterRandomElement.addEventListener('click', () => {
     debouncePhotos(onFilterRandomButtonClick(photos));
   });
 
-  filterDiscussedButton.addEventListener('click', () => {
+  filterDiscussedElement.addEventListener('click', () => {
     debouncePhotos(onFilterDiscussedButtonClick(photos));
   });
 };
